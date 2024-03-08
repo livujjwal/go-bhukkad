@@ -1,14 +1,10 @@
 import { LOGO_URL } from "../utils/constants";
-import { useContext, useState } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import useOnlineStatus from "../utils/useOnlineStatus";
-import UserContext from "../utils/UserContext";
 import { useSelector } from "react-redux";
 const Header = () => {
-  const [btnName, setBtnName] = useState("Login");
   const onlineStatus = useOnlineStatus();
-  // const { loggedInUser } = useContext(UserContext);
-
   const cartItmes = useSelector((store) => store.cart.items);
 
   return (
@@ -30,17 +26,7 @@ const Header = () => {
               {cartItmes.length == 0 ? "" : cartItmes.length} Cart{" "}
             </Link>
           </li>
-          <li className="px-4 py-2 hover:[color:tomato] font-normal text-gray-700">
-            <button
-              className="user"
-              onClick={() => {
-                if (btnName === "Login") setBtnName("Logout");
-                else setBtnName("Login");
-              }}
-            >
-              {/* {btnName} : {loggedInUser} */}
-            </button>
-          </li>
+
           <li className="px-2 py-2 flex items-center justify-center text-gray-700">
             Online Status : {"  "}
             {onlineStatus ? (

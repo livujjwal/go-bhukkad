@@ -1,6 +1,5 @@
-import { useEffect, useState, useContext } from "react";
+import { useState } from "react";
 import ShimmerUI from "./ShimmerUI";
-import UserContext from "../utils/UserContext";
 import { useSelector } from "react-redux";
 import useRestaurantMenu from "../utils/useRestaurantMenu";
 import ItemCard from "./ItemCard";
@@ -9,11 +8,16 @@ const RestaurantMenu = () => {
   useRestaurantMenu();
   const restaurantMenu = useSelector((store) => store.menu.restaurantMenu);
   const [searchText, setSearchText] = useState("");
-  const [filterItem, setfilterItem] = useState([]);
-  // const { loggedInUser, setUserName } = useContext(UserContext);
-  useEffect(() => {
-    setfilterItem(restaurantMenu);
-  }, [restaurantMenu]);
+  const [filterItem, setfilterItem] = useState(restaurantMenu);
+  function handleSearch() {
+    console.log(searchText);
+    setfilterItem(
+      restaurantMenu?.filter(({ name }) =>
+        name.toLowerCase().includes(searchText.toLowerCase())
+      )
+    );
+    setSearchText("");
+  }
   return !filterItem ? (
     <ShimmerUI />
   ) : (
@@ -32,26 +36,10 @@ const RestaurantMenu = () => {
           />
           <button
             className=" hover:[color:tomato] font-bold text-gray-700"
-            onClick={() => {
-              console.log(searchText);
-              setfilterItem(
-                restaurantMenu?.filter((res) =>
-                  res?.name.toLowerCase().includes(searchText.toLowerCase())
-                )
-              );
-              setSearchText("");
-            }}
+            onClick={handleSearch}
           >
             Search
           </button>
-        </div>
-        <div>
-          <input
-            className="border-2 outline-none p-2"
-            type="text"
-            // value={loggedInUser}
-            // onChange={(e) => setUserName(e.target.value)}
-          />
         </div>
       </div>
       <div className="flex items-center justify-center flex-wrap gap-2 w-full mx-auto my-10">
